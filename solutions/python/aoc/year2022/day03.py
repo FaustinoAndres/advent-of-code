@@ -1,6 +1,7 @@
 """
 Day 3: Rucksack Reorganization
 """
+from functools import reduce
 
 
 def get_rucksacks(input_: str) -> list[int]:
@@ -13,9 +14,8 @@ def split_rucksacks(rucksack: str) -> list[str]:
 
 
 def get_coincidence(rucksack: list[str]) -> str:
-    a = set(list(rucksack[0]))
-    b = set(list(rucksack[1]))
-    return list(a.intersection(b))[0]
+    item = reduce(lambda a, b: set(list(a)).intersection(set(list(b))), rucksack)
+    return list(item)[0]
 
 
 def get_points(item: str) -> int:
@@ -38,7 +38,17 @@ def part1(rucksacks: list[str]) -> int:
 
 
 def part2(rucksacks: list[str]) -> int:
-    return 0
+    points = 0
+    teams = list(divide_chunks(rucksacks, 3))
+    for team in teams:
+        item = get_coincidence(team)
+        points += get_points(item)
+    return points
+
+
+def divide_chunks(lst, n):
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
 
 
 def solution(input: str) -> tuple[int, int]:
