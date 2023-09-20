@@ -17,12 +17,18 @@ def get_team_assignments(pair: str) -> tuple[str]:
     return team_assignments[0], team_assignments[1]
 
 
-def fully_contains(pair: str) -> int:
+def fully_contains(pair: str) -> bool:
     elf_1, elf_2 = get_team_assignments(pair)
     elf_1_assignments = get_assignments(elf_1)
     elf_2_assignments = get_assignments(elf_2)
-    total_assignments = elf_1_assignments.union(elf_2_assignments)
-    return int(len(total_assignments) == len(elf_1_assignments) or len(total_assignments) == len(elf_2_assignments))
+    return elf_1_assignments.issubset(elf_2_assignments) or elf_2_assignments.issubset(elf_1_assignments)
+
+
+def union(pair: str) -> bool:
+    elf_1, elf_2 = get_team_assignments(pair)
+    elf_1_assignments = get_assignments(elf_1)
+    elf_2_assignments = get_assignments(elf_2)
+    return len(elf_1_assignments.intersection(elf_2_assignments)) > 0
 
 
 def part1(pairs: list[str]) -> int:
@@ -33,7 +39,10 @@ def part1(pairs: list[str]) -> int:
 
 
 def part2(pairs: list[str]) -> int:
-    return 0
+    total = 0
+    for pair in pairs:
+        total += union(pair)
+    return total
 
 
 def solution(input_: str) -> tuple[int, int]:
