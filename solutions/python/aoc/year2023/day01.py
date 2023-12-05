@@ -1,4 +1,23 @@
 import re
+import copy
+
+
+def replace_numbers(calibration: str) -> str:
+    numbers = {
+        'one': 'o1e',
+        'two': 't2o',
+        'three': 't3e',
+        'four': 'f4r',
+        'five': 'f5e',
+        'six': 's6x',
+        'seven': 's7n',
+        'eight': 'e8t',
+        'nine': 'n9e',
+    }
+    calibration_copy = copy.copy(calibration)
+    for key, value in numbers.items():
+        calibration_copy = calibration_copy.replace(key, value)
+    return calibration_copy
 
 
 def get_calibration(input_: str) -> list[int]:
@@ -25,7 +44,13 @@ def part1(calibrations):
 
 
 def part2(calibrations):
-    return 0
+    number_calibrations = []
+    for calibration in calibrations:
+        calibration_2 = replace_numbers(calibration)
+        string_number = get_numerical_values(calibration_2)
+        two_digit_number = get_two_digit_number(string_number)
+        number_calibrations.append(two_digit_number)
+    return sum(number_calibrations)
 
 
 def solution(input_: str) -> tuple[int, int]:
